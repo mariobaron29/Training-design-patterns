@@ -1,13 +1,10 @@
 package com.sofka.designpatterns.creacionales.colores;
 
-public class Blue implements Color{
-    @Override
-    public String nombre() {
-        return "Azul";
-    }
+public class Blue extends Color  implements Cloneable{
 
     @Override
-    public String codigo() {
-        return "#0000FF";
+    public Color clone() throws CloneNotSupportedException {
+        return super.clone();
     }
+
 }
