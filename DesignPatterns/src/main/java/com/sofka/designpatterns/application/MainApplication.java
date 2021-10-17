@@ -1,5 +1,11 @@
 package com.sofka.designpatterns.application;
 
+import com.sofka.designpatterns.comportamiento.iterator.CarIterator;
+import com.sofka.designpatterns.comportamiento.strategy.Context;
+import com.sofka.designpatterns.comportamiento.strategy.Operation1;
+import com.sofka.designpatterns.comportamiento.strategy.Operation2;
+import com.sofka.designpatterns.comportamiento.strategy.Strategy;
+import com.sofka.designpatterns.comportamiento.templatemethod.StartCar;
 import com.sofka.designpatterns.creacionales.colores.Color;
 import com.sofka.designpatterns.creacionales.vehiculo.abstractfactory.Car;
 import com.sofka.designpatterns.creacionales.vehiculo.abstractfactory.CarFactory;
@@ -16,10 +22,13 @@ import com.sofka.designpatterns.estructurales.composite.departmento.Department;
 import com.sofka.designpatterns.estructurales.composite.departmento.HumanResources;
 import com.sofka.designpatterns.estructurales.composite.departmento.Sales;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainApplication{
     public static void main(String[] args) {
+        List<Car> carList = new ArrayList<>();
+
         // Abstract Factory
         for(CarFactory.Type type : CarFactory.Type.values()){
             CarFactory carFactory = CarFactoryProducer.getFactory();
@@ -50,6 +59,8 @@ public class MainApplication{
             for(String brand: brandsByType){
                 System.out.println(String.format("Brand: %s ", brand));
             }
+
+            carList.add(car);
         }
 
         // Bridge
@@ -78,6 +89,35 @@ public class MainApplication{
 
         company.printDepartment();
 
+
+        //Iterator
+        System.out.println("###### Iterator ######");
+        CarIterator iterator = new CarIterator(carList);
+
+        while(iterator.hasNext()){
+            Car car = iterator.next();
+            System.out.println("Car type: " + car.type());
+        }
+
+        // Strategy
+        System.out.println("###### Strategy ######");
+        String param1 = "Parameter 1";
+        String param2 = "Param";
+        Strategy strategy = new Operation1();
+        Strategy strategy2 = new Operation2();
+        Context context = new Context(strategy);
+        Context context2 = new Context(strategy2);
+
+        System.out.println("Context 1: " + context.executeStrategy(param1, param2));
+        System.out.println("Context 2: " + context2.executeStrategy(param1, param2));
+
+        // Template Method
+        System.out.println("###### Template method  ######");
+        StartCar encenderAuto = new StartCar();
+
+        System.out.println("Starting car.");
+        encenderAuto.startCar();
+        System.out.println("Car started.");
 
     }
 }
